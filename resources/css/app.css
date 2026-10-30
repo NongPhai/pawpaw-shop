@@ -375,7 +375,8 @@ a { color: inherit; }
 .site-header nav a { display: flex; align-items: center; border-bottom: 2px solid transparent; color: #858095; font-size: 12px; text-decoration: none; }
 .site-header nav a.active, .site-header nav a:hover { color: #5945ef; border-color: #5945ef; }
 .site-header.forest nav a.active, .site-header.forest nav a:hover { color: #295746; border-color: #295746; }
-.logo, .cart-pill, .login-pill, .avatar, .account-text, footer a, .product-copy, .detail-link, .category-grid a, .popular a { text-decoration: none; }
+.logo, .cart-pill, .login-pill, .avatar, .account-text, footer a, .product-copy, .detail-link, .category-grid a, .popular a, .section-heading a, .empty-state a, .address-now a, .review-login a, .empty-cart a { text-decoration: none; }
+.section-heading a { color: #5c4ae8; font-size: 12px; font-weight: 600; }
 footer div a { color: #aaa5b1; }
 .popular a { color: inherit; }
 .filters a { min-width: 68px; padding: 8px 16px; border-radius: 999px; border: 1px solid #e7e2f0; background: white; color: #8c8799; font-size: 10px; text-align: center; text-decoration: none; }
