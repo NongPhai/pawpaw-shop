@@ -43,15 +43,16 @@ class FortifyServiceProvider extends ServiceProvider
     /**
      * Configure Fortify views.
      */
-   private function configureViews(): void
+    private function configureViews(): void
     {
+        // หน้าเข้าสู่ระบบ / สมัครสมาชิก ใช้หน้าที่ออกแบบตาม Figma (resources/views/auth)
         Fortify::loginView(fn () => view('auth.login'));
-        Fortify::verifyEmailView(fn () => view('auth.verify-email'));
-        Fortify::twoFactorChallengeView(fn () => view('auth.two-factor-challenge'));
-        Fortify::confirmPasswordView(fn () => view('auth.confirm-password'));
+        Fortify::verifyEmailView(fn () => view('pages::auth.verify-email'));
+        Fortify::twoFactorChallengeView(fn () => view('pages::auth.two-factor-challenge'));
+        Fortify::confirmPasswordView(fn () => view('pages::auth.confirm-password'));
         Fortify::registerView(fn () => view('auth.register'));
-        Fortify::resetPasswordView(fn () => view('auth.reset-password'));
-        Fortify::requestPasswordResetLinkView(fn () => view('auth.forgot-password'));
+        Fortify::resetPasswordView(fn () => view('pages::auth.reset-password'));
+        Fortify::requestPasswordResetLinkView(fn () => view('pages::auth.forgot-password'));
     }
     /**
      * Configure rate limiting.

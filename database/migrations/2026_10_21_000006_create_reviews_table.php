@@ -10,11 +10,12 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
-            $table->unsignedTinyInteger('rating');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->unsignedTinyInteger('rating');   // 1-5, checked in validation
             $table->text('comment')->nullable();
             $table->timestamps();
+            $table->unique(['user_id', 'product_id']); // one review per product per user
         });
     }
 

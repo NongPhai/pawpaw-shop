@@ -163,7 +163,7 @@ return [
     'features' => [
         Features::registration(),
         Features::resetPasswords(),
-        Features::emailVerification(),
+        // Features::emailVerification(),  // ปิดไว้: ไม่ต้องยืนยันอีเมลตอนสมัคร
         Features::twoFactorAuthentication([
             'confirm' => true,
             'confirmPassword' => true,

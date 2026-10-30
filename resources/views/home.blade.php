@@ -28,7 +28,7 @@
                 <span class="mini-badge">คัดสรรเพื่อนรัก</span>
                 <div>🐶</div>
                 <small>ไอเทมแนะนำ</small>
-                <strong>เริ่ม ฿129</strong>
+                <strong>เริ่ม ฿{{ number_format($startingPrice ?? 0) }}</strong>
             </div>
             <span class="art-label bottom">♡ บันทึกไว้ดูภายหลัง</span>
         </div>
@@ -79,12 +79,12 @@
             <b>แมว</b>
             <small>ทรายแมว · คอนโด · ขนม</small>
         </a>
-        <a href="{{ route('products.index', ['pet' => 'rabbit']) }}" style="background: #fff0e7;">
-            <i>🦭</i>
-            <b>แมวและสัตว์เล็ก</b>
+        <a href="{{ route('products.index', ['pet' => 'small_pet']) }}" style="background: #fff0e7;">
+            <i>🐦</i>
+            <b>นกและสัตว์เล็ก</b>
             <small>กรง · อาหาร · ของเล่น</small>
         </a>
-        <a href="{{ route('products.index', ['pet' => 'other']) }}" style="background: #e5f8ef;">
+        <a href="{{ route('products.index', ['pet' => 'fish']) }}" style="background: #e5f8ef;">
             <i>🐠</i>
             <b>ปลา</b>
             <small>ตู้ปลา · อาหาร · อุปกรณ์</small>
@@ -102,69 +102,9 @@
 
     <div class="product-grid">
     @foreach($recommendedProducts as $product)
-        <article class="product-card">
-            <!-- ส่วนรูปภาพ (คลิกแล้วไปหน้าดูรายละเอียด) -->
-            <div class="product-visual" style="background: #eee8ff; position: relative; cursor: pointer;" onclick="window.location='{{ route('products.show', $product->id) }}'">
-                <span class="badge">ขายดี</span>
-                <span class="product-emoji">
-                    <img src="{{ $product->image }}" alt="{{ $product->name }}" style="width: 80px; height: 80px; object-fit: contain;">
-                </span>
-                
-                <!-- ปุ่มหัวใจ: ใส่ style="z-index: 10; position: absolute;" เพื่อให้คลิกโดนปุ่มนี้โดยตรง -->
-                <button type="button" 
-                        class="favorite {{ auth()->check() && auth()->user()->favorites && auth()->user()->favorites->contains($product->id) ? 'selected' : '' }}" 
-                        style="z-index: 10; position: absolute; top: 9px; right: 9px;"
-                        onclick="event.stopPropagation(); event.preventDefault(); toggleFavorite({{ $product->id }}, this);" 
-                        aria-label="บันทึกรายการโปรด">
-                    ♡
-                </button>
-            </div>
-
-            <a href="{{ route('products.show', $product->id) }}" class="product-copy">
-                <small>{{ $product->category->name ?? 'ทั่วไป' }}</small>
-                <strong>{{ $product->name }}</strong>
-                <span class="price">฿{{ number_format($product->price) }}</span>
-            </a>
-            <div class="product-foot">
-                <span>★ 4.9</span>
-                <small>PawPals</small>
-            </div>
-            <a href="{{ route('products.show', $product->id) }}" class="detail-link">ดูรายละเอียดสินค้า ↗</a>
-        </article>
+        @include('partials.product-card', ['product' => $product])
     @endforeach
 </div>
 </main>
 
-<script>
-function toggleFavorite(productId, buttonElement) {
-    fetch(`/favorite/${productId}`, {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.status === 401) {
-            alert('กรุณาเข้าสู่ระบบก่อนบันทึกรายการโปรด');
-            window.location.href = '{{ route("login") }}';
-            return;
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data) {
-            if (data.favorited) {
-                buttonElement.classList.add('selected');
-            } else {
-                buttonElement.classList.remove('selected');
-            }
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
-</script>
 @endsection

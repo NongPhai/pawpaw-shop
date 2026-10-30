@@ -2,50 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\CartItem;
-use Illuminate\Support\Facades\Auth;
 
+/**
+ * หน้า 05 — ตะกร้าสินค้า
+ * ตาราง cart_items เป็นตารางกลาง M:N ระหว่าง users กับ products (PK = user_id + product_id)
+ * จึงใช้ relationship $user->cartProducts() กับ attach / updateExistingPivot / detach
+ */
 class CartController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $cartItems = CartItem::with('product')
-            ->where('user_id', Auth::id())
-            ->get();
+        $cartItems = $request->user()->cartProducts()->with('category')->get();
+        $subtotal = $cartItems->sum(fn ($p) => $p->price * $p->pivot->quantity);
+        $shippingFee = $cartItems->isEmpty() ? 0 : Order::SHIPPING_FEE;
 
-        return view('cart.index', compact('cartItems'));
+        return view('cart.index', compact('cartItems', 'subtotal', 'shippingFee'));
     }
 
+    // ปุ่ม "ใส่ตะกร้า" และ "ซื้อเลย" ในหน้ารายละเอียดสินค้า
     public function add(Request $request)
     {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
+        $data = $request->validate([
+            'product_id' => ['required', 'exists:products,id'],
+            'quantity' => ['required', 'integer', 'min:1'],
         ]);
 
-        $cartItem = CartItem::where('user_id', Auth::id())
-            ->where('product_id', $request->product_id)
-            ->first();
+        $user = $request->user();
+        $product = Product::findOrFail($data['product_id']);
+        $current = $user->cartProducts()->where('product_id', $product->id)->first()?->pivot->quantity ?? 0;
+        $newQuantity = $current + $data['quantity'];
 
-        if ($cartItem) {
-            $cartItem->quantity += $request->quantity;
-            $cartItem->save();
+        if ($newQuantity > $product->stock) {
+            return back()->with('error', "สินค้ามีในสต็อกเพียง {$product->stock} ชิ้น");
+        }
+
+        if ($current > 0) {
+            $user->cartProducts()->updateExistingPivot($product->id, ['quantity' => $newQuantity]);
         } else {
-            CartItem::create([
-                'user_id' => Auth::id(),
-                'product_id' => $request->product_id,
-                'quantity' => $request->quantity,
-            ]);
+            $user->cartProducts()->attach($product->id, ['quantity' => $newQuantity]);
+        }
+
+        // กด "ซื้อเลย" ไปหน้า checkout ทันที
+        if ($request->input('action') === 'buy_now') {
+            return redirect()->route('checkout.index');
+        }
+
+        return redirect()->route('cart.index')->with('success', 'เพิ่มสินค้าลงตะกร้าแล้ว');
+    }
+
+    // ปุ่ม − / + ในตะกร้า
+    public function update(Request $request, Product $product)
+    {
+        $user = $request->user();
+        $item = $user->cartProducts()->where('product_id', $product->id)->firstOrFail();
+        $quantity = $item->pivot->quantity + ($request->input('change') === 'decrease' ? -1 : 1);
+
+        if ($quantity < 1) {
+            $user->cartProducts()->detach($product->id);
+        } elseif ($quantity > $product->stock) {
+            return back()->with('error', "สินค้ามีในสต็อกเพียง {$product->stock} ชิ้น");
+        } else {
+            $user->cartProducts()->updateExistingPivot($product->id, ['quantity' => $quantity]);
         }
 
         return redirect()->route('cart.index');
     }
 
-    public function destroy($id)
+    // ปุ่ม "นำออก"
+    public function destroy(Request $request, Product $product)
     {
-        $cartItem = CartItem::where('user_id', Auth::id())->where('id', $id)->firstOrFail();
-        $cartItem->delete();
+        $request->user()->cartProducts()->detach($product->id);
 
         return redirect()->route('cart.index');
     }
