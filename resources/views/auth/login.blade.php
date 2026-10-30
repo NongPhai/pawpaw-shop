@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+{{-- หน้า 08 — เข้าสู่ระบบ (Fortify จัดการล็อกอินให้ ใช้อีเมล + รหัสผ่าน) --}}
 @section('content')
 <main class="auth-page">
     <section class="auth-art">
@@ -17,7 +18,7 @@
         <div class="single-fields">
             <label>
                 <span>อีเมล</span>
-                <input type="email" name="email" placeholder="กรอกอีเมล" required value="{{ old('email') }}">
+                <input type="email" name="email" placeholder="กรอกอีเมล" required autofocus value="{{ old('email') }}">
             </label>
             <label>
                 <span>รหัสผ่าน</span>
@@ -25,11 +26,18 @@
             </label>
         </div>
 
-        <button type="submit" class="auth-submit" style="margin-top: 20px;">เข้าสู่ระบบ</button>
+        <div class="login-extra">
+            <label><input type="checkbox" name="remember"> จดจำฉันไว้</label>
+            @if(Route::has('password.request'))
+                <a href="{{ route('password.request') }}">ลืมรหัสผ่าน?</a>
+            @endif
+        </div>
 
-        <div class="switch-auth" style="margin-top: 20px;">
+        <button type="submit" class="auth-submit">เข้าสู่ระบบ</button>
+
+        <div class="switch-auth">
             ยังไม่มีบัญชีใช่ไหม?
-            <a href="{{ route('register') }}" style="color: #ea580c; font-weight: bold; text-decoration: none;">สมัครสมาชิก</a>
+            <a href="{{ route('register') }}">สมัครสมาชิก</a>
         </div>
     </form>
 </main>

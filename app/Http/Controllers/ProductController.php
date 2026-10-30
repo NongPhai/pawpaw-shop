@@ -2,33 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    // หน้า 02 — ค้นหา / รายการสินค้า
     public function index(Request $request)
     {
-        $query = Product::with('category');
+        $query = Product::withStats();
 
-        // กรองตามคำค้นหา
-        if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
+        // ค้นหาจากชื่อ แบรนด์ หรือคำอธิบายสั้น
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('brand', 'like', "%{$search}%")
+                    ->orWhere('short_description', 'like', "%{$search}%")
+                    ->orWhereHas('category', fn ($c) => $c->where('name', 'like', "%{$search}%"));
+            });
         }
 
-        // กรองตามประเภทสัตว์เลี้ยง (dog, cat, rabbit, other)
-        if ($request->has('pet') && $request->pet != '') {
+        // กรองตามประเภทสัตว์: dog, cat, small_pet, fish
+        if ($request->filled('pet') && array_key_exists($request->pet, Product::PET_TYPES)) {
             $query->where('pet_type', $request->pet);
         }
 
-        $products = $query->latest()->get();
+        $products = $query->orderBy('id')->get();
 
         return view('products.index', compact('products'));
     }
 
-    public function show($id)
+    // หน้า 04 — รายละเอียดสินค้า
+    public function show(Product $product)
     {
-        $product = Product::with('category')->findOrFail($id);
-        return view('products.show', compact('product'));
+        $product = Product::withStats()->findOrFail($product->id);
+
+        $reviews = $product->reviews()->with('user')->latest()->get();
+
+        // รีวิวของผู้ใช้คนนี้ (ถ้ามี) ใช้เติมค่าในฟอร์มรีวิว
+        $myReview = auth()->check()
+            ? $reviews->firstWhere('user_id', auth()->id())
+            : null;
+
+        return view('products.show', compact('product', 'reviews', 'myReview'));
     }
 }

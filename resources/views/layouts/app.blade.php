@@ -3,28 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PawPaw Shop</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ isset($title) ? $title . ' · ' : '' }}PawPaw Shop</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- 1. ดึงฟอนต์ Prompt จาก Google Fonts -->
+    <!-- ฟอนต์ Prompt จาก Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- 2. บังคับให้ทุกส่วนของเว็บใช้ฟอนต์นี้ -->
     <style>
-        body, .app, h1, h2, h3, h4, h5, h6, p, span, a, button, input, small, strong, b, em, i {
+        body, .app, h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, small, strong, b, em, i {
             font-family: 'Prompt', sans-serif !important;
         }
     </style>
 </head>
 <body>
     @php
-        $isForestTheme = in_array(Route::currentRouteName(), ['products.show', 'cart.index', 'checkout.index', 'login', 'register', 'profile']);
+        // Figma: หน้าแรก / ค้นหา / รายการโปรด ใช้ธีมม่วง, หน้าที่เหลือใช้ธีมเขียว
+        $isForestTheme = ! request()->routeIs('home', 'products.index', 'favorites.index');
     @endphp
 
     <div class="app {{ $isForestTheme ? 'forest-theme' : 'violet-theme' }}">
-        <!-- Header -->
         <header class="site-header {{ $isForestTheme ? 'forest' : '' }}">
             <div class="header-inner">
                 <a href="{{ route('home') }}" class="logo">
@@ -35,37 +34,45 @@
                 <nav>
                     <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">หน้าแรก</a>
                     <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">สินค้า</a>
-                    <a href="{{ route('products.index', ['favorite' => 1]) }}">♡ รายการโปรด</a>
+                    <a href="{{ route('favorites.index') }}" class="{{ request()->routeIs('favorites.*') ? 'active' : '' }}">♡ รายการโปรด</a>
                 </nav>
 
                 <div class="header-actions">
-                    @if($isForestTheme)
-                        @auth
-                            <a href="{{ route('cart.index') }}" class="cart-pill">
-                                🛒 ตะกร้าสินค้า
-                            </a>
-                            <a href="{{ route('profile') }}" class="login-pill">บัญชีของฉัน</a>
-                        @else
-                            <a href="{{ route('login') }}" class="login-pill">เข้าสู่ระบบ</a>
-                        @endauth
+                    @auth
+                        <a href="{{ route('cart.index') }}" class="cart-pill">
+                            🛒 ตะกร้าสินค้า{{ $cartCount > 0 ? " ({$cartCount})" : '' }}
+                        </a>
+                        <a href="{{ route('profile') }}" class="avatar" title="บัญชีของฉัน">
+                            {{ mb_substr(Auth::user()->name, 0, 1) }}
+                        </a>
                     @else
-                        @auth
-                            <a href="{{ route('profile') }}" class="avatar">
-                                {{ mb_substr(Auth::user()->name, 0, 1) }}
-                            </a>
-                            <a href="{{ route('profile') }}" class="account-text">บัญชีของฉัน</a>
-                        @else
-                            <a href="{{ route('login') }}" class="account-text">เข้าสู่ระบบ</a>
-                        @endauth
-                    @endif
+                        <a href="{{ route('login') }}" class="login-pill">เข้าสู่ระบบ</a>
+                    @endauth
                 </div>
             </div>
         </header>
 
-        <!-- Dynamic Content -->
+        {{-- ข้อความแจ้งเตือนหลังทำรายการ (สำเร็จ / ผิดพลาด) --}}
+        @if(session('success') || session('error') || $errors->any())
+            <div class="flash-wrap">
+                @if(session('success'))
+                    <div class="flash success">✓ {{ session('success') }}</div>
+                @endif
+                @if(session('error'))
+                    <div class="flash error">! {{ session('error') }}</div>
+                @endif
+                @if($errors->any())
+                    <div class="flash error">
+                        @foreach($errors->all() as $message)
+                            <div>! {{ $message }}</div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        @endif
+
         @yield('content')
 
-        <!-- Footer -->
         <footer>
             <a href="{{ route('home') }}" class="logo">
                 <span>p</span>
@@ -74,9 +81,39 @@
             <span>เพื่อนคู่ใจของสัตว์เลี้ยงทุกตัว © 2026</span>
             <div>
                 <a href="{{ route('products.index') }}">เลือกซื้อสินค้า</a>
-                <a href="{{ route('profile') }}">เคล็ดลับดูแลน้อง</a>
+                <a href="{{ route('favorites.index') }}">รายการโปรด</a>
             </div>
         </footer>
     </div>
+
+    <script>
+    // ปุ่มหัวใจบนการ์ดสินค้า: เพิ่ม/เอาออกจากรายการโปรด โดยไม่ต้องโหลดหน้าใหม่
+    function toggleFavorite(productId, button) {
+        fetch(`/favorite/${productId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json',
+            },
+        })
+        .then(response => {
+            if (response.status === 401) {
+                window.location.href = '{{ route('login') }}';
+                return null;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data) return;
+            button.classList.toggle('selected', data.favorited);
+            button.textContent = data.favorited ? '♥' : '♡';
+            // อยู่หน้ารายการโปรดแล้วกดเอาออก → ซ่อนการ์ดนั้น
+            if (!data.favorited && button.closest('[data-favorites-page]')) {
+                button.closest('.product-card').remove();
+            }
+        })
+        .catch(error => console.error(error));
+    }
+    </script>
 </body>
 </html>

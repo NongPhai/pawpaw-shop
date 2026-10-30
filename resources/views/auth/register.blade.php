@@ -1,23 +1,28 @@
 @extends('layouts.app')
 
+{{-- หน้า 07 — สมัครสมาชิก (บันทึกผ่าน app/Actions/Fortify/CreateNewUser.php) --}}
 @section('content')
 <main class="auth-page signup">
     <section class="auth-art">
         <div>🐶 🐱</div>
         <h2>เริ่มต้นดูแลน้องไปด้วยกัน</h2>
-        <p>สมัครสมาชิก PawPals เพื่อเก็บที่อยู่ ติดตามคำสั่งซื้อ และดูรายการโปรด</p>
+        <p>สมัครสมาชิก PawPaw เพื่อเก็บที่อยู่ ติดตามคำสั่งซื้อ และดูรายการโปรด</p>
     </section>
 
     <form class="auth-form" method="POST" action="{{ route('register') }}">
         @csrf
-        <span class="orange-kicker">WELCOME TO PAWPALS</span>
+        <span class="orange-kicker">WELCOME TO PAWPAW</span>
         <h1>สมัครสมาชิก</h1>
         <p>สร้างบัญชีเพื่อช้อปของให้น้องได้สะดวกขึ้น</p>
 
         <div class="form-grid">
-            <label class="wide">
-                <span>ชื่อ-นามสกุล</span>
-                <input type="text" name="name" placeholder="กรอกชื่อ-นามสกุล" required value="{{ old('name') }}">
+            <label>
+                <span>ชื่อจริง</span>
+                <input type="text" name="name" placeholder="กรอกชื่อจริง" required value="{{ old('name') }}">
+            </label>
+            <label>
+                <span>นามสกุล</span>
+                <input type="text" name="last_name" placeholder="กรอกนามสกุล" required value="{{ old('last_name') }}">
             </label>
             <label class="wide">
                 <span>อีเมล</span>
@@ -37,11 +42,16 @@
             </label>
         </div>
 
-        <button type="submit" class="auth-submit" style="margin-top: 20px;">สมัครสมาชิก</button>
+        <label class="terms">
+            <input type="checkbox" name="terms" value="1" {{ old('terms') ? 'checked' : '' }} required>
+            ฉันยอมรับเงื่อนไขการใช้งานและนโยบายความเป็นส่วนตัว
+        </label>
 
-        <div class="switch-auth" style="margin-top: 20px;">
+        <button type="submit" class="auth-submit">สมัครสมาชิก</button>
+
+        <div class="switch-auth">
             มีบัญชีอยู่แล้ว?
-            <a href="{{ route('login') }}" style="color: #ea580c; font-weight: bold; text-decoration: none;">เข้าสู่ระบบ</a>
+            <a href="{{ route('login') }}">เข้าสู่ระบบ</a>
         </div>
     </form>
 </main>

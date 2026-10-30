@@ -2,34 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\Favorite;
-use Illuminate\Support\Facades\Auth;
 
+/**
+ * หน้า 03 — รายการโปรด (ตาราง wishlists)
+ * wishlists เป็นตารางกลาง M:N ระหว่าง users กับ products
+ */
 class FavoriteController extends Controller
 {
-    public function toggle(Request $request, $productId)
+    public function index(Request $request)
     {
-        if (!Auth::check()) {
-            return response()->json(['message' => 'Unauthenticated'], 401);
+        $products = $request->user()->wishlist()
+            ->withAvg('reviews', 'rating')
+            ->with('category')
+            ->orderByPivot('created_at', 'desc')
+            ->get();
+
+        return view('favorites.index', compact('products'));
+    }
+
+    // ปุ่มหัวใจ: กดครั้งแรก = เพิ่ม, กดอีกครั้ง = เอาออก
+    public function toggle(Request $request, Product $product)
+    {
+        $result = $request->user()->wishlist()->toggle($product->id);
+        $favorited = count($result['attached']) > 0;
+
+        if ($request->expectsJson()) {
+            return response()->json(['favorited' => $favorited]);
         }
 
-        $userId = Auth::id();
-
-        // ตรวจสอบว่ามีรายการโปรดนี้อยู่แล้วหรือไม่
-        $favorite = Favorite::where('user_id', $userId)
-                            ->where('product_id', $productId)
-                            ->first();
-
-        if ($favorite) {
-            $favorite->delete();
-            return response()->json(['status' => 'removed', 'favorited' => false]);
-        } else {
-            Favorite::create([
-                'user_id' => $userId,
-                'product_id' => $productId,
-            ]);
-            return response()->json(['status' => 'added', 'favorited' => true]);
-        }
+        return back();
     }
 }
