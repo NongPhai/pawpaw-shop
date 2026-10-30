@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
  * Run: ./vendor/bin/sail artisan db:seed --class=ShopSeeder
  *
  * Demo accounts:
- *   somchai@mail.com / 123456
+ *   customer@pawpaw.com / password  (สมชาย ใจดี)
  *   malee@mail.com   / 123456
  */
 class ShopSeeder extends Seeder
@@ -32,7 +32,7 @@ class ShopSeeder extends Seeder
         }
 
         // ---------- users (name = first name) ----------
-        $somchai = $this->makeUser('สมชาย', 'ใจดี', 'somchai@mail.com', '123456', '0812345678',
+        $somchai = $this->makeUser('สมชาย', 'ใจดี', 'customer@pawpaw.com', 'password', '0812345678',
             '99/1 ถ.นิมมานเหมินท์ อ.เมือง', 'เชียงใหม่', '50200');
         $malee = $this->makeUser('มาลี', 'รักแมว', 'malee@mail.com', '123456', '0898765432',
             '12 ซ.รังสิต 5 อ.ธัญบุรี', 'ปทุมธานี', '12130');
