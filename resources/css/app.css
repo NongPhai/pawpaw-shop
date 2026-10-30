@@ -1,10 +1,10 @@
 /* ==========================================
    1. CONFIG & BASE STYLES
    ========================================== */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap');
 
 :root {
-  font-family: 'Noto Sans Thai', sans-serif;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
   color: #25223f;
   background: #fff;
   font-synthesis: none;

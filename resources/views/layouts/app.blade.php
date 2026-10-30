@@ -7,13 +7,13 @@
     <title>{{ isset($title) ? $title . ' · ' : '' }}PawPaw Shop</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- ฟอนต์ Prompt จาก Google Fonts -->
+    <!-- ฟอนต์ตาม Figma: IBM Plex Sans Thai (หัวข้อ 700, เนื้อหา 400) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body, .app, h1, h2, h3, h4, h5, h6, p, span, a, button, input, select, textarea, small, strong, b, em, i {
-            font-family: 'Prompt', sans-serif !important;
+            font-family: 'IBM Plex Sans Thai', sans-serif !important;
         }
     </style>
 </head>
