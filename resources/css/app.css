@@ -465,3 +465,51 @@ footer div a { color: #aaa5b1; }
 .cart-qty { justify-self: start; }
 .payment label:has(input:checked) { background: #eaf3dc; border-color: #eaf3dc; font-weight: 600; }
 .detail-image b { font-size: 96px; }
+
+/* ==========================================
+   HEADER ตาม Figma (01 Header / Header background)
+   ม่วง: สูง 78px เส้นล่าง #EBE8F5 | เขียว: สูง 82px
+   ========================================== */
+.site-header { height: 78px; border-bottom: 1px solid #ebe8f5; background: #fff; }
+.site-header.forest { height: 82px; border-bottom-color: #ecebe4; }
+.header-inner { max-width: 1312px; padding: 0 20px; position: relative; }
+.site-header .logo { gap: 10px; font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif !important; }
+.site-header .logo b { font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif !important; font-size: 22px; font-weight: 700; color: #5c4ae8; }
+.site-header .logo-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px; background: #5c4ae8; color: #fff; font-family: 'Inter', sans-serif !important; font-size: 24px; font-weight: 700; line-height: 1; padding-bottom: 4px; }
+.site-header.forest .logo b { font-size: 23px; color: #305745; }
+.site-header.forest .logo-mark { width: 38px; height: 38px; border-radius: 12px; background: #305745; padding: 0; }
+.site-header.forest .logo span:after { content: none; }
+
+/* เมนูกลาง */
+/* ตำแหน่งเมนูตาม Figma: ม่วงเริ่มที่ x=390, เขียวเริ่มที่ x=520 (หน้ากว้าง 1440) */
+.site-header nav { position: absolute; left: 326px; height: 100%; gap: 32px; }
+.site-header.forest nav { left: 460px; gap: 50px; }
+.site-header nav a { font-size: 14px; font-weight: 600; color: #85829e; border-bottom: 3px solid transparent; padding-top: 3px; }
+.site-header nav a.active, .site-header nav a:hover { color: #5c4ae8; border-color: #5c4ae8; }
+.site-header.forest nav a { font-weight: 500; color: #6b7566; border-bottom: 0; padding-top: 0; }
+.site-header.forest nav a.active, .site-header.forest nav a:hover { color: #305745; font-weight: 600; }
+
+/* ปุ่มด้านขวา */
+.header-actions { gap: 12px; }
+.site-header .round-action { position: relative; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #ebe8f5; background: #fff; color: #242140; font-size: 17px; text-decoration: none; }
+.site-header .user-menu { display: flex; align-items: center; gap: 9px; text-decoration: none; margin-left: 4px; }
+.site-header .avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #e8bfe8; color: #fff; font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif !important; font-size: 15px; font-weight: 700; }
+.site-header .account-text { font-size: 13px; font-weight: 600; color: #242140; }
+.site-header .cart-pill, .site-header .login-pill { height: 42px; border-radius: 21px; padding: 0 22px; font-size: 13px; font-weight: 600; text-decoration: none; justify-content: center; }
+.site-header .cart-pill { min-width: 130px; background: #ebf2e0; color: #305745; }
+.site-header .login-pill { min-width: 110px; background: #305745; color: #fff; }
+.cart-count { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: #e8763f; color: #fff; font-size: 10px; font-weight: 700; margin-left: 6px; }
+.round-action .cart-count { position: absolute; top: -4px; right: -4px; margin: 0; }
+
+@media (max-width: 1180px) {
+  .site-header nav, .site-header.forest nav { left: 50%; transform: translateX(-50%); gap: 28px; }
+}
+@media (max-width: 900px) {
+  .site-header nav, .site-header.forest nav { position: static; transform: none; gap: 18px; }
+  .header-actions { display: flex; }
+  .site-header .account-text { display: none; }
+  .site-header .cart-pill { min-width: 0; padding: 0 14px; }
+}
+@media (max-width: 640px) {
+  .site-header nav { display: none; }
+}
