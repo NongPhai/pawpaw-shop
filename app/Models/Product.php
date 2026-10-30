@@ -18,8 +18,8 @@ class Product extends Model
         'fish' => 'ปลา',
     ];
 
-    // สีพื้นหลังการ์ดสินค้าตาม Figma (ม่วง ฟ้า ส้ม เขียว) วนตามลำดับสินค้า
-    public const CARD_COLORS = ['#efeaff', '#e7f3ff', '#fff0e7', '#e5f8ef'];
+    // สีพื้นหลังการ์ดสินค้า โทนเขียว/ครีม วนตามลำดับสินค้า
+    public const CARD_COLORS = ['#ebf2e0', '#f6efdf', '#fdeee4', '#e5f1ea'];
 
     // อาหารแต่ละสัตว์ใช้ emoji ต่างกัน
     public const FOOD_EMOJI = [

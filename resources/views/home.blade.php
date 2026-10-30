@@ -69,22 +69,22 @@
     </div>
 
     <div class="category-grid">
-        <a href="{{ route('products.index', ['pet' => 'dog']) }}" style="background: #efeaff;">
+        <a href="{{ route('products.index', ['pet' => 'dog']) }}" style="background: #ebf2e0;">
             <i>🐕</i>
             <b>สุนัข</b>
             <small>อาหาร · สายจูง · ของเล่น</small>
         </a>
-        <a href="{{ route('products.index', ['pet' => 'cat']) }}" style="background: #e7f3ff;">
+        <a href="{{ route('products.index', ['pet' => 'cat']) }}" style="background: #f6efdf;">
             <i>🐈</i>
             <b>แมว</b>
             <small>ทรายแมว · คอนโด · ขนม</small>
         </a>
-        <a href="{{ route('products.index', ['pet' => 'small_pet']) }}" style="background: #fff0e7;">
+        <a href="{{ route('products.index', ['pet' => 'small_pet']) }}" style="background: #fdeee4;">
             <i>🐦</i>
             <b>นกและสัตว์เล็ก</b>
             <small>กรง · อาหาร · ของเล่น</small>
         </a>
-        <a href="{{ route('products.index', ['pet' => 'fish']) }}" style="background: #e5f8ef;">
+        <a href="{{ route('products.index', ['pet' => 'fish']) }}" style="background: #e5f1ea;">
             <i>🐠</i>
             <b>ปลา</b>
             <small>ตู้ปลา · อาหาร · อุปกรณ์</small>
