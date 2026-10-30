@@ -19,8 +19,8 @@
 </head>
 <body>
     @php
-        // Figma: หน้าแรก / ค้นหา / รายการโปรด ใช้ธีมม่วง, หน้าที่เหลือใช้ธีมเขียว
-        $isForestTheme = ! request()->routeIs('home', 'products.index', 'favorites.index');
+        // ทั้งเว็บใช้ธีมเขียวสีเดียวกับโลโก้ (เดิม Figma แยกม่วง/เขียว)
+        $isForestTheme = true;
     @endphp
 
     <div class="app {{ $isForestTheme ? 'forest-theme' : 'violet-theme' }}">
@@ -99,7 +99,7 @@
 
         <footer>
             <a href="{{ route('home') }}" class="logo">
-                <span>p</span>
+                <span><svg viewBox="0 0 24 24" width="16" height="16" fill="#fff" aria-hidden="true"><ellipse cx="6" cy="9" rx="2.2" ry="2.8"/><ellipse cx="10" cy="5.5" rx="2.2" ry="2.8"/><ellipse cx="14.5" cy="5.5" rx="2.2" ry="2.8"/><ellipse cx="18.5" cy="9" rx="2.2" ry="2.8"/><path d="M12.2 10.5c-3 0-6.2 4.3-6.2 6.7 0 1.7 1.3 2.6 3 2.6 1.4 0 2.1-.7 3.2-.7s1.8.7 3.2.7c1.7 0 3-.9 3-2.6 0-2.4-3.2-6.7-6.2-6.7z"/></svg></span>
                 <b>PawPaw</b>
             </a>
             <span>เพื่อนคู่ใจของสัตว์เลี้ยงทุกตัว © 2026</span>
