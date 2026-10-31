@@ -86,6 +86,25 @@ class ShopSeeder extends Seeder
         $materials = [2 => 'ไหมพรม/ขนนก', 3 => 'ผ้าฝ้าย', 4 => 'ไนลอน', 9 => 'เต้าหู้', 10 => 'ไม้/เชือกป่าน',
                       11 => 'พลาสติก/สแตนเลส', 12 => 'ขวดพลาสติก', 14 => 'ลวดเหล็ก/พลาสติก', 16 => 'กระจก'];
 
+        $productImages = [
+            1 => '/images/products/01_dog_food_adult.jpg',
+            2 => '/images/products/07_cat_toy_set.jpg',
+            3 => '/images/products/04_pet_bed.jpg',
+            4 => '/images/products/05_dog_leash.jpg',
+            5 => '/images/products/02_dog_food_puppy.jpg',
+            6 => '/images/products/03_dog_dental_chew.jpg',
+            7 => '/images/products/08_cat_food_tuna.jpg',
+            8 => '/images/products/09_cat_lickable_salmon.jpg',
+            9 => '/images/products/10_tofu_cat_litter.jpg',
+            10 => '/images/products/11_cat_condo.jpg',
+            11 => '/images/products/12_grooming_brush.jpg',
+            12 => '/images/products/06_dog_shampoo.jpg',
+            13 => '/images/products/13_bird_seed.jpg',
+            14 => '/images/products/14_hamster_cage.jpg',
+            15 => '/images/products/15_fish_food.jpg',
+            16 => '/images/products/16_aquarium_led.jpg',
+        ];
+
         $p = [];
         foreach ($rows as $no => [$name, $short, $desc, $brand, $size, $price, $orig, $stock, $badge, $category, $pet]) {
             $p[$no] = Product::create([
@@ -98,6 +117,7 @@ class ShopSeeder extends Seeder
                 'original_price' => $orig,
                 'stock' => $stock,
                 'badge' => $badge,
+                'image' => $productImages[$no] ?? null,
                 'pet_type' => $pet,
                 'product_type' => in_array($category, ['อาหาร', 'ขนม']) ? 'food' : 'accessory',
                 'flavor' => $flavors[$no] ?? null,

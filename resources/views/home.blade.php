@@ -23,10 +23,12 @@
         </div>
         <div class="hero-art">
             <span class="art-label top">✦ น้องต้องชอบแน่</span>
-            <div class="arch"></div>
+            <div class="arch" style="background-image: url('/images/hero/hero_pets.jpg'); background-size: cover; background-position: center; border-radius: 120px 120px 20px 20px;"></div>
             <div class="recommend-card">
                 <span class="mini-badge">คัดสรรเพื่อนรัก</span>
-                <div>🐶</div>
+                <div style="overflow: hidden; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px;">
+                    <img src="/images/categories/cat_dog.jpg" alt="สุนัข" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
                 <small>ไอเทมแนะนำ</small>
                 <strong>เริ่ม ฿{{ number_format($startingPrice ?? 0) }}</strong>
             </div>
@@ -69,23 +71,23 @@
     </div>
 
     <div class="category-grid">
-        <a href="{{ route('products.index', ['pet' => 'dog']) }}" style="background: #ebf2e0;">
-            <i>🐕</i>
+        <a href="{{ route('products.index', ['pet' => 'dog']) }}" style="background: #ebf2e0; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <img src="/images/categories/cat_dog.jpg" alt="สุนัข" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">
             <b>สุนัข</b>
             <small>อาหาร · สายจูง · ของเล่น</small>
         </a>
-        <a href="{{ route('products.index', ['pet' => 'cat']) }}" style="background: #f6efdf;">
-            <i>🐈</i>
+        <a href="{{ route('products.index', ['pet' => 'cat']) }}" style="background: #f6efdf; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <img src="/images/categories/cat_cat.jpg" alt="แมว" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">
             <b>แมว</b>
             <small>ทรายแมว · คอนโด · ขนม</small>
         </a>
-        <a href="{{ route('products.index', ['pet' => 'small_pet']) }}" style="background: #fdeee4;">
-            <i>🐦</i>
+        <a href="{{ route('products.index', ['pet' => 'small_pet']) }}" style="background: #fdeee4; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <img src="/images/categories/cat_bird_small.jpg" alt="นกและสัตว์เล็ก" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">
             <b>นกและสัตว์เล็ก</b>
             <small>กรง · อาหาร · ของเล่น</small>
         </a>
-        <a href="{{ route('products.index', ['pet' => 'fish']) }}" style="background: #e5f1ea;">
-            <i>🐠</i>
+        <a href="{{ route('products.index', ['pet' => 'fish']) }}" style="background: #e5f1ea; display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <img src="/images/categories/cat_fish.jpg" alt="ปลา" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.06);">
             <b>ปลา</b>
             <small>ตู้ปลา · อาหาร · อุปกรณ์</small>
         </a>

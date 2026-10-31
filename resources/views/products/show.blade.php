@@ -13,12 +13,12 @@
     <p class="lead">{{ $product->short_description }}</p>
 
     <div class="product-detail">
-        <div class="detail-image">
+        <div class="detail-image" style="overflow: hidden; border-radius: 20px; display: flex; align-items: center; justify-content: center; height: 320px;">
             @if($product->badge)
                 <span>{{ $product->badge }}</span>
             @endif
             @if($product->image)
-                <img src="{{ $product->image }}" alt="{{ $product->name }}" style="max-width: 200px;">
+                <img src="{{ $product->image }}" alt="{{ $product->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
             @else
                 <b style="font-size: 96px;">{{ $product->emoji() }}</b>
             @endif

@@ -18,9 +18,9 @@
             @forelse($cartItems as $item)
                 <div class="cart-row">
                     <div class="cart-product">
-                        <span style="background: {{ $item->cardColor() }};">
+                        <span style="background: {{ $item->cardColor() }}; width: 44px; height: 44px; overflow: hidden; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             @if($item->image)
-                                <img src="{{ $item->image }}" alt="" style="width: 40px;">
+                                <img src="{{ $item->image }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                             @else
                                 {{ $item->emoji() }}
                             @endif
