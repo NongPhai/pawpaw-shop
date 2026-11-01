@@ -40,6 +40,16 @@
                         {{ $label }}
                     </label>
                 @endforeach
+
+                {{-- เลือก "โอนเงิน" แล้วแสดง QR (QR ตัวอย่าง ไม่ใช่บัญชีจริง) --}}
+                <div class="transfer-qr" id="transfer-qr">
+                    <img src="/images/payment/qr_demo.png" alt="QR สำหรับโอนเงิน (ตัวอย่าง)">
+                    <div>
+                        <b>สแกนเพื่อโอนเงิน</b>
+                        <p>ยอดที่ต้องโอน <strong>฿{{ number_format($subtotal + $shippingFee) }}</strong></p>
+                        <small>โอนแล้วกดยืนยันคำสั่งซื้อ ร้านจะตรวจยอดและเปลี่ยนสถานะเป็น "ชำระเงินแล้ว"</small>
+                    </div>
+                </div>
             </section>
         </div>
 
@@ -64,4 +74,18 @@
         </aside>
     </form>
 </main>
+
+<script>
+// แสดง QR เฉพาะตอนเลือก "โอนเงิน"
+(function () {
+    const qr = document.getElementById('transfer-qr');
+    const radios = document.querySelectorAll('input[name="payment_method"]');
+    const update = () => {
+        const checked = document.querySelector('input[name="payment_method"]:checked');
+        qr.style.display = checked && checked.value === 'transfer' ? 'flex' : 'none';
+    };
+    radios.forEach(r => r.addEventListener('change', update));
+    update();
+})();
+</script>
 @endsection

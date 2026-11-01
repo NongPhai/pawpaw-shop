@@ -22,6 +22,18 @@
             <section class="form-card">
                 <h2>วิธีชำระเงิน</h2>
                 <p class="address-now">{{ \App\Models\Order::PAYMENT_METHODS[$order->payment_method] ?? $order->payment_method }}</p>
+
+                {{-- โอนเงินแต่ยังไม่ชำระ: แสดง QR ให้สแกน (พอเปลี่ยน status เป็น paid แล้ว QR จะหายไป) --}}
+                @if($order->payment_method === 'transfer' && $order->status === 'pending')
+                    <div class="transfer-qr">
+                        <img src="/images/payment/qr_demo.png" alt="QR สำหรับโอนเงิน (ตัวอย่าง)">
+                        <div>
+                            <b>สแกนเพื่อโอนเงิน</b>
+                            <p>ยอดที่ต้องโอน <strong>฿{{ number_format($order->total) }}</strong></p>
+                            <small>ร้านจะตรวจยอดและเปลี่ยนสถานะเป็น "ชำระเงินแล้ว"</small>
+                        </div>
+                    </div>
+                @endif
             </section>
         </div>
 

@@ -534,3 +534,12 @@ a.recommend-card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rg
 .recommend-name { font-size: 13px; line-height: 1.3; margin: 2px 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 a.art-label { text-decoration: none; }
 a.art-label:hover { background: #ebf2e0; }
+
+/* QR โอนเงิน (checkout + รายละเอียดคำสั่งซื้อ) */
+.transfer-qr { display: flex; gap: 18px; align-items: center; margin-top: 16px; padding: 16px; border-radius: 12px; background: #f4f7ee; border: 1px dashed #c9dcb4; }
+.transfer-qr img { width: 160px; height: auto; object-fit: contain; border-radius: 10px; background: #fff; flex-shrink: 0; }
+.transfer-qr b { display: block; font-size: 15px; color: #305745; }
+.transfer-qr p { margin: 6px 0; font-size: 14px; color: #4a5a52; }
+.transfer-qr strong { font-size: 20px; color: #305745; }
+.transfer-qr small { display: block; font-size: 12px; color: #8a938b; line-height: 1.5; }
+@media (max-width: 520px) { .transfer-qr { flex-direction: column; text-align: center; } }
