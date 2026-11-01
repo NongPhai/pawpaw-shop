@@ -103,10 +103,6 @@
                 <b>PawPaw</b>
             </a>
             <span>เพื่อนคู่ใจของสัตว์เลี้ยงทุกตัว © 2026</span>
-            <div>
-                <a href="{{ route('products.index') }}">เลือกซื้อสินค้า</a>
-                <a href="{{ route('favorites.index') }}">รายการโปรด</a>
-            </div>
         </footer>
     </div>
 
