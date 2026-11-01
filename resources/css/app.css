@@ -525,3 +525,12 @@ footer .logo span { background: #305745; color: #fff; }
 footer .logo b { color: #305745; }
 .hero h1 em { color: #5e8f4f; }
 .eyebrow { background: #ebf2e0; color: #305745; }
+
+/* การ์ดสินค้าแนะนำใน hero (กดได้) */
+a.recommend-card { text-decoration: none; color: inherit; transition: transform .2s, box-shadow .2s; }
+a.recommend-card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(48,87,69,.14); }
+.recommend-card > .recommend-image { overflow: hidden; padding: 0; }
+.recommend-image img { width: 100%; height: 100%; object-fit: cover; }
+.recommend-name { font-size: 13px; line-height: 1.3; margin: 2px 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+a.art-label { text-decoration: none; }
+a.art-label:hover { background: #ebf2e0; }

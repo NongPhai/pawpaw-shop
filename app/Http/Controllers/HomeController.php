@@ -16,14 +16,15 @@ class HomeController extends Controller
             ->take(4)
             ->get();
 
-        // ราคาเริ่มต้นที่ถูกที่สุด สำหรับการ์ด "เริ่ม ฿..." ใน hero
-        $startingPrice = Product::where('stock', '>', 0)->min('price');
+        // การ์ด "ไอเทมแนะนำ" ใน hero: สินค้าที่มีป้ายและยังมีของ ชิ้นแรก (ถ้าไม่มี ใช้สินค้าที่มีของชิ้นแรก)
+        $featuredProduct = Product::where('stock', '>', 0)->whereNotNull('badge')->orderBy('id')->first()
+            ?? Product::where('stock', '>', 0)->orderBy('id')->first();
 
         // จำนวนสินค้าในแต่ละประเภทสัตว์ สำหรับกล่องหมวดหมู่
         $petCounts = Product::selectRaw('pet_type, COUNT(*) as total')
             ->groupBy('pet_type')
             ->pluck('total', 'pet_type');
 
-        return view('home', compact('recommendedProducts', 'startingPrice', 'petCounts'));
+        return view('home', compact('recommendedProducts', 'featuredProduct', 'petCounts'));
     }
 }

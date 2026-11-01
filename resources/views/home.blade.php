@@ -24,40 +24,24 @@
         <div class="hero-art">
             <span class="art-label top">✦ น้องต้องชอบแน่</span>
             <div class="arch" style="background-image: url('/images/hero/hero_pets.jpg'); background-size: cover; background-position: center; border-radius: 120px 120px 20px 20px;"></div>
-            <div class="recommend-card">
-                <span class="mini-badge">คัดสรรเพื่อนรัก</span>
-                <div style="overflow: hidden; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px;">
-                    <img src="/images/categories/cat_dog.jpg" alt="สุนัข" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <small>ไอเทมแนะนำ</small>
-                <strong>เริ่ม ฿{{ number_format($startingPrice ?? 0) }}</strong>
-            </div>
-            <span class="art-label bottom">♡ บันทึกไว้ดูภายหลัง</span>
+            {{-- การ์ดสินค้าแนะนำ: สินค้าจริงจากฐานข้อมูล กดแล้วไปหน้าสินค้านั้น --}}
+            @if($featuredProduct)
+                <a href="{{ route('products.show', $featuredProduct) }}" class="recommend-card">
+                    <span class="mini-badge">{{ $featuredProduct->badge ?? 'คัดสรรเพื่อนรัก' }}</span>
+                    <div class="recommend-image">
+                        @if($featuredProduct->image)
+                            <img src="{{ $featuredProduct->image }}" alt="{{ $featuredProduct->name }}">
+                        @else
+                            {{ $featuredProduct->emoji() }}
+                        @endif
+                    </div>
+                    <small>ไอเทมแนะนำ</small>
+                    <b class="recommend-name">{{ $featuredProduct->name }}</b>
+                    <strong>฿{{ number_format($featuredProduct->price) }}</strong>
+                </a>
+            @endif
+            <a href="{{ route('favorites.index') }}" class="art-label bottom">♡ บันทึกไว้ดูภายหลัง</a>
         </div>
-    </div>
-</section>
-
-<section class="benefits">
-    <div>
-        <span>♡</span>
-        <p>
-            <b>คุณภาพที่ใส่ใจ</b>
-            <small>เลือกสินค้าคุณภาพสำหรับน้อง</small>
-        </p>
-    </div>
-    <div>
-        <span>♡</span>
-        <p>
-            <b>ช้อปง่ายทุกวัน</b>
-            <small>รวมของใช้สัตว์เลี้ยงที่เดียว</small>
-        </p>
-    </div>
-    <div>
-        <span>⌕</span>
-        <p>
-            <b>ส่งความสุขให้น้อง</b>
-            <small>ของดีสำหรับทุกช่วงวัย</small>
-        </p>
     </div>
 </section>
 
