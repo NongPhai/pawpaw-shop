@@ -17,10 +17,6 @@
             <a href="#orders" class="profile-link">▤ ประวัติคำสั่งซื้อ</a>
             <a href="{{ route('favorites.index') }}" class="profile-link">♡ รายการโปรด</a>
 
-            <form action="{{ route('logout') }}" method="POST" class="logout-form">
-                @csrf
-                <button type="submit" class="logout">ออกจากระบบ</button>
-            </form>
         </aside>
 
         <div class="profile-content">

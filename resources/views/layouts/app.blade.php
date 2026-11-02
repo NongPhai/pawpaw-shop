@@ -52,6 +52,11 @@
                         </a>
                         @auth
                             <a href="{{ route('profile') }}" class="login-pill">บัญชีของฉัน</a>
+                            {{-- ออกจากระบบ (Fortify ต้องเป็น POST + CSRF) --}}
+                            <form action="{{ route('logout') }}" method="POST" class="logout-header-form">
+                                @csrf
+                                <button type="submit" class="logout-pill">ออกจากระบบ</button>
+                            </form>
                         @else
                             <a href="{{ route('login') }}" class="login-pill">เข้าสู่ระบบ</a>
                         @endauth
